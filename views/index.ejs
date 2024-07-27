@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Library</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        .book-cover {
+            width: 200px; /* Set the desired width */
+            height: 300px; /* Set the desired height */
+            object-fit: cover; /* Ensure the image covers the dimensions without distortion */
+        }
+    </style>
+</head>
+<body>
+  <%- include('partials/header.ejs'); -%>
+
+    <div class="container">
+        <h1>Books Library</h1>
+        <div class="row">
+            <% listBooks.forEach((book, index) => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%= coverURLs[index] %>" class="card-img-top book-cover" alt="Book Cover">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= book.title %></h5>
+                            <p class="card-text"><%= book.description %></p>
+                            <p class="card-text">Rating: <%= book.rating %></p>
+                            <p class="card-text">Date Read: <%= (() => { 
+                                // Define formatDate function here
+                                const date = new Date(book.date_read);
+                                const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                                return formattedDate;
+                            })() %></p>
+                            <div class="btn-group" role="group">
+                                <!-- Edit button redirects to a dynamic route based on book ID -->
+                                <a href="/books/<%= book.id %>/edit" class="btn btn-primary">Edit</a>
+                                <!-- Delete button (implement delete functionality) -->
+                                <a href="/books/<%= book.id %>/delete" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <div class="mt-4">
+            <!-- Redirect to the '/books/new' route when the button is clicked -->
+            <a href="/views/new.ejs" class="btn btn-success">Add New Book</a>
+        </div>
+    </div>
+    <%- include('partials/footer.ejs'); -%>
+</body>
+</html>
